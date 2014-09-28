@@ -4,6 +4,7 @@
 #include "ofxiOS.h"
 #include "ofxiOSExtras.h"
 #include "Gesture.h"
+#include "Menu.h"
 
 class ofApp : public ofxiOSApp {
 	
@@ -25,4 +26,5 @@ class ofApp : public ofxiOSApp {
         void deviceOrientationChanged(int newOrientation);
     
         Gesture currentGesture;
+        Menu menu;
 };
