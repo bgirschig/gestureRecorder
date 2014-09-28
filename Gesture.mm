@@ -9,6 +9,7 @@
 #include "Gesture.h"
 
 Gesture::Gesture(){
+    colorPalette.loadImage("colorPalette.jpg");
     startTime = 0;
     traces = vector<Trace>();
     currentTraces = vector<Trace>();
@@ -26,7 +27,6 @@ void Gesture::draw(){
 void Gesture::touchDown(ofTouchEventArgs & touch){
     if(traces.size() == 0){
         startTime = ofGetElapsedTimeMillis();
-        cout << startTime <<endl;
     }
     currentTraces.push_back(Trace(touch.id));
 }
@@ -41,7 +41,9 @@ void Gesture::touchMove(ofTouchEventArgs & touch){
 void Gesture::touchUp(ofTouchEventArgs & touch){
     for(int i=0; i<currentTraces.size(); i++){
         if(currentTraces[i].touchId == touch.id){
-            currentTraces[i].color = ofColor(200,150,100);
+            
+            currentTraces[i].color = colorPalette.getColor( (traces.size()+currentTraces.size())%colorPalette.width, 0);
+            
             currentTraces[i].duration = ofGetElapsedTimeMillis()-currentTraces[i].startTime;
             traces.push_back(currentTraces[i]);
             currentTraces.erase(currentTraces.begin()+i);
@@ -49,5 +51,5 @@ void Gesture::touchUp(ofTouchEventArgs & touch){
         }
     }
     duration = ofGetElapsedTimeMillis() - startTime;
-    cout << duration<<endl;
+    
 }

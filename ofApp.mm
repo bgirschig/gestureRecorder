@@ -3,7 +3,7 @@
 //--------------------------------------------------------------
 void ofApp::setup(){
     ofNoFill();
-//    colorPalette.loadImage("colorPalette.jpg");
+    currentGesture = Gesture();
 }
 
 //--------------------------------------------------------------

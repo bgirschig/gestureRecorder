@@ -27,6 +27,7 @@ class Gesture{
     
     vector<Trace> traces;
     vector<Trace> currentTraces;
+    ofImage colorPalette;
 };
 
 #endif
