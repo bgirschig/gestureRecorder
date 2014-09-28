@@ -12,6 +12,7 @@
 class Settings{
     public:
     const static bool test = true;
+    const static int lineWidth = 7;
 };
 
 #endif

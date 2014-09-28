@@ -15,7 +15,7 @@ Trace::Trace(int _touchId, ofColor _color){
 }
 Trace::Trace(int _touchId){
     touchId = _touchId;
-    color = ofColor(5, 0, 5);
+    color = ofColor(20, 50, 90);
     id = 0;
 }
 
@@ -23,12 +23,11 @@ void Trace::addPoint(int x, int y, int time){
     if(points.size()==0) startTime = time;
     points.push_back(TimedPoint(x, y, time-startTime));
 }
-void Trace::draw(){
-    ofSetLineWidth(3);
+void Trace::draw(int animTime){
+    ofSetLineWidth(Settings::lineWidth);
     ofSetColor(color);
     ofPolyline line = ofPolyline();
-    int animTime = ofGetElapsedTimeMillis()%duration;
-    for(int i=0; i<points.size() && points[i].t<animTime;i++){
+    for(int i=0; i<points.size() && points[i].t<animTime-startTime;i++){
         line.addVertex(points[i]);
     }
     line.draw();

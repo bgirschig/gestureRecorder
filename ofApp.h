@@ -3,7 +3,7 @@
 #include "ofMain.h"
 #include "ofxiOS.h"
 #include "ofxiOSExtras.h"
-#include "Trace.h"
+#include "Gesture.h"
 
 class ofApp : public ofxiOSApp {
 	
@@ -24,8 +24,6 @@ class ofApp : public ofxiOSApp {
         void gotMemoryWarning();
         void deviceOrientationChanged(int newOrientation);
     
-        vector<Trace> traces;
-        vector<Trace> currentTraces;
-        Trace test = Trace(100);
         ofImage colorPalette;
+        Gesture currentGesture;
 };
