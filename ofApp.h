@@ -5,9 +5,9 @@
 #include "ofxiOSExtras.h"
 #include "Gesture.h"
 #include "Menu.h"
+#include "Homegrid.h"
 
 class ofApp : public ofxiOSApp {
-	
     public:
         void setup();
         void update();
@@ -27,4 +27,5 @@ class ofApp : public ofxiOSApp {
     
         Gesture currentGesture;
         Menu menu;
+        Homegrid homegrid;
 };

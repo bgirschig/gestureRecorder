@@ -9,44 +9,59 @@
 #include "Menu.h"
 
 Menu::Menu(){
-    stage = 3;
-    btnText = "BEGIN";
-    font.loadFont("Futura.ttc", 12);
+    stage = 0;
+    btnText = "NEW";
+    font.loadFont("Arial.ttf", Settings::menuFontSize);
     hasTouch = false;
 }
 Boolean Menu::click(int mouseY){
     if(stage==2 && mouseY>ofGetWindowHeight()-Settings::menuBtnHeight*2){
         hasTouch = true;
-        if(mouseY<ofGetWindowHeight()-Settings::menuBtnHeight){
-            stage = 1;
-            btnText = "SAVE";
-        }
-        else{
-            stage = 0;
-            btnText = "NEW";
-        }
+        if(mouseY<ofGetWindowHeight()-Settings::menuBtnHeight) gotoStage(1);
+        else gotoStage(0);
     }
     else if(mouseY>ofGetWindowHeight()-Settings::menuBtnHeight){
         hasTouch = true;
-        if(stage == 0){
-            stage = 1;
-            btnText = "SAVE";
-        }
-        else if(stage == 1){
-            stage = 2;
-            btnText = "OK";
-        }
-        else if(stage==3){
-            stage = 5;
-            btnText = "ADD VERSION";
-        }
-        else if(stage==5){
-            stage = 0;
-            btnText = "NEW";
-        }
+        if(stage == 0)      gotoStage(1);
+        else if(stage == 1) gotoStage(2);
+        else if(stage==3)   gotoStage(5);
+        else if(stage==5)   gotoStage(0);
     }
     return hasTouch;
 }
+void Menu::gotoStage(int _stage){
+    switch (_stage) {
+        case 0:
+            stage = _stage;
+            btnText = "NEW";
+            break;
+        case 1:
+            stage = _stage;
+            btnText = "SAVE";
+            break;
+        case 2:
+            btnText = "OK";
+            stage = _stage;
+//            ofNotifyEvent(saveEvent, true);
+            break;
+        case 3:
+            btnText = "BEGIN";
+            stage = _stage;
+            break;
+        case 4:
+            btnText = "...wait";
+            stage = _stage;
+            break;
+        case 5:
+            btnText = "SAVE";
+            stage = _stage;
+            break;
+            
+        default:
+            break;
+    }
+}
+
 void Menu::draw(){
     ofFill();
     ofSetColor(176);
