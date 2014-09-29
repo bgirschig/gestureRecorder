@@ -16,6 +16,7 @@ class Menu{
     Menu();
     void draw();
     Boolean click(int mouseY);
+    void gotoStage(int _stage);
     ofTrueTypeFont font;
     string btnText;
     Boolean hasTouch;

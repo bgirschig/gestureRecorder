@@ -29,9 +29,6 @@ void ofApp::exit(){
 }
 
 //--------------------------------------------------------------
-}
-
-//--------------------------------------------------------------
 void ofApp::touchDown(ofTouchEventArgs & touch){
     if(menu.click(touch.y)==false){
         if(menu.stage==0){
