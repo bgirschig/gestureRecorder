@@ -15,14 +15,9 @@ Gesture::Gesture(){
     currentTraces = vector<Trace>();
 }
 
-void Gesture::addTrace(Trace _trace){
-    traces.push_back(_trace);
-    if(_trace.duration>duration) duration = _trace.duration;
-}
 void Gesture::draw(){
     for(int i=0; i<currentTraces.size();i++) currentTraces[i].draw(INFINITY);
-    if(duration>1) for(int i=0; i<traces.size();i++) traces[i].draw(ofGetElapsedTimeMillis()%duration);
-    
+    if(duration>1) for(int i=0; i<traces.size();i++) traces[i].draw(ofGetElapsedTimeMillis()%duration);    
 }
 void Gesture::touchDown(ofTouchEventArgs & touch){
     if(traces.size() == 0){

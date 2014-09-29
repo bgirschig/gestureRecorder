@@ -11,20 +11,32 @@
 Menu::Menu(){
     stage = 0;
     btnText = "NEW";
-    font.loadFont("Arial.ttf", Settings::menuFontSize);
+    font.loadFont("futura.ttf", Settings::menuFontSize);
     hasTouch = false;
 }
 Boolean Menu::click(int mouseY){
-    if(stage==2 && mouseY>ofGetWindowHeight()-Settings::menuBtnHeight*2){
+    if((stage==2 || stage==3) && mouseY>ofGetWindowHeight()-Settings::menuBtnHeight*2){
         hasTouch = true;
-        if(mouseY<ofGetWindowHeight()-Settings::menuBtnHeight) gotoStage(1);
-        else gotoStage(0);
+        if(mouseY<ofGetWindowHeight()-Settings::menuBtnHeight){
+            gotoStage(0);
+            static MenuEvent newEvent;
+            newEvent.message = "backToHome";
+            ofNotifyEvent(MenuEvent::events, newEvent);
+        }
+        else{
+            if(stage==2){
+                static MenuEvent newEvent;
+                newEvent.message = "save";
+                ofNotifyEvent(MenuEvent::events, newEvent);
+                gotoStage(0);
+            }
+            else if(stage == 3) gotoStage(5);
+        }
     }
     else if(mouseY>ofGetWindowHeight()-Settings::menuBtnHeight){
         hasTouch = true;
         if(stage == 0)      gotoStage(1);
         else if(stage == 1) gotoStage(2);
-        else if(stage==3)   gotoStage(5);
         else if(stage==5)   gotoStage(0);
     }
     return hasTouch;
@@ -37,12 +49,11 @@ void Menu::gotoStage(int _stage){
             break;
         case 1:
             stage = _stage;
-            btnText = "SAVE";
+            btnText = "DONE";
             break;
         case 2:
-            btnText = "OK";
+            btnText = "SAVE";
             stage = _stage;
-//            ofNotifyEvent(saveEvent, true);
             break;
         case 3:
             btnText = "BEGIN";
@@ -65,8 +76,14 @@ void Menu::gotoStage(int _stage){
 void Menu::draw(){
     ofFill();
     ofSetColor(176);
-    ofRect(0, ofGetWindowHeight()-Settings::menuBtnHeight, ofGetWindowWidth(), ofGetWindowHeight()-Settings::menuBtnHeight);
+    
+    ofRect(0, ofGetWindowHeight()-Settings::menuBtnHeight, ofGetWindowWidth(), Settings::menuBtnHeight);
+    if(stage==2 || stage==3) ofRect(0, ofGetWindowHeight()-(2.07*Settings::menuBtnHeight), ofGetWindowWidth(),Settings::menuBtnHeight);
     ofSetColor(255);
     int w = font.stringWidth(btnText);
     font.drawString(btnText, ofGetWindowWidth()/2-(w/2), ofGetWindowHeight()-Settings::menuBtnHeight+(Settings::menuBtnHeight/2)+6);
+    if(stage==2 || stage==3){
+        w = font.stringWidth("CANCEL");
+        font.drawString("CANCEL", ofGetWindowWidth()/2-(w/2), ofGetWindowHeight()-(2.07*Settings::menuBtnHeight)+(Settings::menuBtnHeight/2)+6);
+    }
 }

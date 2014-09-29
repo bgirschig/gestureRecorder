@@ -13,7 +13,6 @@
 class Gesture{
     public:
     Gesture();
-    void addTrace(Trace _trace);
     void draw();
     
     void touchDown(ofTouchEventArgs & touch);

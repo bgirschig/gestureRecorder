@@ -6,26 +6,31 @@
 #include "Gesture.h"
 #include "Menu.h"
 #include "Homegrid.h"
+#include "MenuEvent.h"
 
 class ofApp : public ofxiOSApp {
     public:
-        void setup();
-        void update();
-        void draw();
-        void exit();
-	
-        void touchDown(ofTouchEventArgs & touch);
-        void touchMoved(ofTouchEventArgs & touch);
-        void touchUp(ofTouchEventArgs & touch);
-        void touchDoubleTap(ofTouchEventArgs & touch);
-        void touchCancelled(ofTouchEventArgs & touch);
+    void setup();
+    void update();
+    void draw();
+    void exit();
 
-        void lostFocus();
-        void gotFocus();
-        void gotMemoryWarning();
-        void deviceOrientationChanged(int newOrientation);
+    void touchDown(ofTouchEventArgs & touch);
+    void touchMoved(ofTouchEventArgs & touch);
+    void touchUp(ofTouchEventArgs & touch);
+    void touchDoubleTap(ofTouchEventArgs & touch);
+    void touchCancelled(ofTouchEventArgs & touch);
+
+    void lostFocus();
+    void gotFocus();
+    void gotMemoryWarning();
+    void deviceOrientationChanged(int newOrientation);
     
-        Gesture currentGesture;
-        Menu menu;
-        Homegrid homegrid;
+    void menuEvent(MenuEvent &e);
+    
+    Gesture currentGesture;
+    Menu* menu;
+    Homegrid homegrid;
+    ofTrueTypeFont font;
+    int test = 34;
 };

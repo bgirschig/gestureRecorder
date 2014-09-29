@@ -10,6 +10,8 @@
 #define GestureRecorder_Menu_h
 #include "Settings.h"
 #include <ofMain.h>
+#include "MenuEvent.h"
+
 
 class Menu{
     public:
@@ -22,6 +24,7 @@ class Menu{
     Boolean hasTouch;
     int stage;
     
+    ofEvent<float> onVolumeChange;
 };
 
 #endif

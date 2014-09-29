@@ -2,13 +2,24 @@
 
 //--------------------------------------------------------------
 void ofApp::setup(){
+    font.loadFont("futura.ttf", 12);
     ofNoFill();
+
     currentGesture = Gesture();
-    menu = Menu();
+    menu = new Menu();
     homegrid = Homegrid(Settings::homeGridMargin, Settings::homeGridColCount);
-    homegrid.gestures.push_back(Gesture());
-    homegrid.gestures.push_back(Gesture());
-    homegrid.gestures.push_back(Gesture());
+    
+    ofAddListener(MenuEvent::events, this, &ofApp::menuEvent);
+}
+
+void ofApp::menuEvent(MenuEvent &e) {
+    if(e.message == "save"){
+        homegrid.gestures.push_back(currentGesture);
+        currentGesture = Gesture();
+    }
+    else if(e.message=="backToHome"){
+        currentGesture = Gesture();
+    }
 }
 
 //--------------------------------------------------------------
@@ -18,9 +29,10 @@ void ofApp::update(){
 //--------------------------------------------------------------
 void ofApp::draw(){
     ofBackground(200, 200, 200);
-    currentGesture.draw();
-    menu.draw();
-    if(menu.stage==0) homegrid.draw();
+    if(menu->stage==0) homegrid.draw();
+    else if(menu->stage==2||menu->stage==3) currentGesture.draw();
+    ofFill();
+    menu->draw();
 }
 
 //--------------------------------------------------------------
@@ -30,12 +42,12 @@ void ofApp::exit(){
 
 //--------------------------------------------------------------
 void ofApp::touchDown(ofTouchEventArgs & touch){
-    if(menu.click(touch.y)==false){
-        if(menu.stage==0){
+    if(menu->click(touch.y)==false){
+        if(menu->stage==0){
             int selected = homegrid.onClick(touch.x, touch.y);
             if(selected>=0){
                 currentGesture = homegrid.gestures[selected];
-                menu.gotoStage(3);
+                menu->gotoStage(3);
             }
         }
         else currentGesture.touchDown(touch);
@@ -43,13 +55,13 @@ void ofApp::touchDown(ofTouchEventArgs & touch){
 }
 //--------------------------------------------------------------
 void ofApp::touchMoved(ofTouchEventArgs & touch){
-    if(!menu.hasTouch) currentGesture.touchMove(touch);
+    if(!menu->hasTouch && (menu->stage==1 || menu->stage==5)) currentGesture.touchMove(touch);
 }
 
 //--------------------------------------------------------------
 void ofApp::touchUp(ofTouchEventArgs & touch){
-    if(!menu.hasTouch) currentGesture.touchUp(touch);
-    menu.hasTouch = false;
+    if(!menu->hasTouch && (menu->stage==1 || menu->stage==5)) currentGesture.touchUp(touch);
+    menu->hasTouch = false;
 }
 
 //--------------------------------------------------------------
