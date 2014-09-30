@@ -14,29 +14,21 @@ void ofApp::setup(){
     loadExisting();
 }
 void ofApp::loadExisting(){
-    cout<<"load\n";
 //    string action_url = "http://localhost:8888/GestureRecorderServer/gestureLoader.php";
-    string action_url = "http://bastiengirschig.fr/GestureRecorder/gestureLoader.php";
+    string action_url = "http://bastiengirschig.fr/GestureRecorder/gestureLoader.php?loadData";
 	ofAddListener(httpUtils.newResponseEvent,this,&ofApp::newResponse);
 	httpUtils.start();
     
     ofxHttpForm form;
 	form.action = action_url;
-	form.method = OFX_HTTP_POST;
-	form.addFormField("loadData", "");
-	form.addFile("file","ofw-logo.gif");
 	httpUtils.addForm(form);
-    
-//
 }
 void ofApp::newResponse(ofxHttpResponse & response){
-//    cout << ofToString(response.status) + ": " + (string)response.responseBody;
-    vector<string> gestureStrings = ofSplitString(response.responseBody, "\r");
-    for (int i=0; i<gestureStrings.size()-1; i++) {
-        homegrid.gestures.push_back(Gesture(gestureStrings[i]));
-        cout << "====================" << endl;
-        cout << gestureStrings[i] << endl;
-        cout << homegrid.gestures[homegrid.gestures.size()-1].toString(true)<<endl;
+    if (response.status == 200){
+        vector<string> gestureStrings = ofSplitString(response.responseBody, "\r");
+        for (int i=0; i<gestureStrings.size()-1; i++) {
+            homegrid.gestures.push_back(Gesture(gestureStrings[i]));
+        }
     }
 }
 
