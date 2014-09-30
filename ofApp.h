@@ -8,6 +8,9 @@
 #include "Homegrid.h"
 #include "MenuEvent.h"
 
+#include "Poco/RegularExpression.h"
+using Poco::RegularExpression;
+
 class ofApp : public ofxiOSApp {
     public:
     void setup();
@@ -27,7 +30,7 @@ class ofApp : public ofxiOSApp {
     void deviceOrientationChanged(int newOrientation);
     
     void menuEvent(MenuEvent &e);
-    
+    void loadExisting();
     Gesture currentGesture;
     Menu* menu;
     Homegrid homegrid;

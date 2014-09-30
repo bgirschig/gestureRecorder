@@ -9,18 +9,24 @@
 #ifndef GestureRecorder_Gesture_h
 #define GestureRecorder_Gesture_h
 #import "Trace.h"
+#include <sstream>
 
 class Gesture{
     public:
     Gesture();
+    Gesture(string loadData);
     void draw();
     
     void touchDown(ofTouchEventArgs & touch);
     void touchMove(ofTouchEventArgs & touch);
     void touchUp(ofTouchEventArgs & touch);
+    void load(string str);
+    
+    string toString(Boolean prettyPrint);
     
     int startTime;
     int duration;
+    int gestureGroup;
     
     Boolean drawing;
     
