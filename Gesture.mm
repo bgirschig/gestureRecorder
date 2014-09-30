@@ -51,8 +51,8 @@ void Gesture::addTrace(Trace trace){
 }
 void Gesture::load(string str){
     vector<string> lines = ofSplitString(str, "||");
-    gestureGroup = ofToInt(ofSplitString(lines[0], " ")[0]);
-    duration = ofToInt(ofSplitString(lines[0], " ")[1]);
+    gestureGroup = ofToInt(ofSplitString(lines[0], "_")[0]);
+    duration = ofToInt(ofSplitString(lines[0], "_")[1]);
     
     for(int i=1;i<lines.size();i++){
         addTrace(Trace(0));
@@ -79,12 +79,12 @@ string Gesture::toString(Boolean prettyPrint){
         }
     }
     else{
-        result << gestureGroup << " "<< duration << "\n";
+        result << gestureGroup << "_"<< duration << "|";
         for (int i=0; i<traces.size(); i++) {
             for (int j=0;j<traces[i].points.size(); j++) {
                 result << "|" << traces[i].points[j].x << "," << traces[i].points[j].y<< "," << traces[i].points[j].t;
             }
-            result << endl;
+            result << "||";
         }
     }
     return result.str();

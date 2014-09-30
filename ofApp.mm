@@ -30,12 +30,26 @@ void ofApp::newResponse(ofxHttpResponse & response){
             homegrid.gestures.push_back(Gesture(gestureStrings[i]));
         }
     }
+    else{
+        ofRemoveListener(httpUtils.newResponseEvent,this,&ofApp::newResponse);
+        httpUtils.stop();
+    }
+    currentGesture.gestureGroup = homegrid.gestures.size();
 }
 
 void ofApp::menuEvent(MenuEvent &e) {
     if(e.message == "save"){
+        // add to homeGrid
         homegrid.gestures.push_back(currentGesture);
+        
+        // save to server
+        ofxHttpForm form;
+        form.action = "http://bastiengirschig.fr/GestureRecorder/gestureLoader.php?saveData&&dataString="+currentGesture.toString(false);
+        httpUtils.addForm(form);
+        
+        //reset "current gesture"
         currentGesture = Gesture();
+        currentGesture.gestureGroup = homegrid.gestures.size();
     }
     else if(e.message=="backToHome"){
         currentGesture = Gesture();
