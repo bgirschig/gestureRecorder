@@ -9,7 +9,6 @@
 #ifndef GestureRecorder_Gesture_h
 #define GestureRecorder_Gesture_h
 #import "Trace.h"
-#include <sstream>
 
 class Gesture{
     public:
