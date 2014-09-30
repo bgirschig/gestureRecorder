@@ -43,7 +43,6 @@ void Gesture::touchUp(ofTouchEventArgs & touch){
             
             currentTraces[i].color = colorPalette.getColor( (traces.size()+currentTraces.size())%colorPalette.width, 0);
             
-            currentTraces[i].duration = ofGetElapsedTimeMillis()-currentTraces[i].startTime;
             traces.push_back(currentTraces[i]);
             currentTraces.erase(currentTraces.begin()+i);
             break;
@@ -60,7 +59,6 @@ void Gesture::load(string str){
     for(int i=1;i<lines.size();i++){
         traces.push_back(Trace(0, ofColor(0)));
         vector<string> points = ofSplitString(lines[i], "|");
-        traces[traces.size()-1].duration = ofToInt(points[0]);
         
         for (int j=1; j<points.size(); j++) {
             vector<string> parts = ofSplitString(points[j], ",");
@@ -76,7 +74,7 @@ string Gesture::toString(Boolean prettyPrint){
         result << "gestureDuration: " << duration << endl;
         result << "traces (" << traces.size() << "):" << endl;
         for (int i=0; i<traces.size(); i++) {
-            result << "\ttrace (duration: "<<traces[i].duration<<")"<<endl;
+            result << "\ttrace"<<endl;
             for (int j=0; j<traces[i].points.size(); j++) {
                 result << "\t\tpoint:" << endl << "\t\t\tx:" << traces[i].points[j].x << endl << "\t\t\ty:" << traces[i].points[j].x << endl<< "\t\t\tt:" << traces[i].points[j].t << endl;
             }
@@ -85,7 +83,6 @@ string Gesture::toString(Boolean prettyPrint){
     else{
         result << gestureGroup << " "<< duration << "\n";
         for (int i=0; i<traces.size(); i++) {
-            result << traces[i].duration;
             for (int j=0;j<traces[i].points.size(); j++) {
                 result << "|" << traces[i].points[j].x << "," << traces[i].points[j].y<< "," << traces[i].points[j].t;
             }

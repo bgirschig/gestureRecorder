@@ -24,9 +24,7 @@ class Trace{
     ofPolyline line;
     vector<TimedPoint> points;
     ofColor color;
-    int startTime;
 
-    int duration = INFINITY;
     int touchId;
     int id;
 };
