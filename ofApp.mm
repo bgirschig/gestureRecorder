@@ -15,7 +15,8 @@ void ofApp::setup(){
 }
 void ofApp::loadExisting(){
     cout<<"load\n";
-    string action_url = "http://localhost:8888/test.php";
+//    string action_url = "http://localhost:8888/GestureRecorderServer/gestureLoader.php";
+    string action_url = "http://bastiengirschig.fr/GestureRecorder/gestureLoader.php";
 	ofAddListener(httpUtils.newResponseEvent,this,&ofApp::newResponse);
 	httpUtils.start();
     
