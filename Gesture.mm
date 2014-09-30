@@ -9,7 +9,6 @@
 #include "Gesture.h"
 
 Gesture::Gesture(){
-    colorPalette.loadImage("colorPalette.jpg");
     startTime = 0;
     traces = vector<Trace>();
     currentTraces = vector<Trace>();
@@ -18,7 +17,6 @@ Gesture::Gesture(string loadData){
     Gesture();
     load(loadData);
 }
-
 void Gesture::draw(){
     for(int i=0; i<currentTraces.size();i++) currentTraces[i].draw(INFINITY);
     if(duration>1) for(int i=0; i<traces.size();i++) traces[i].draw(ofGetElapsedTimeMillis()%duration);    
@@ -40,24 +38,24 @@ void Gesture::touchMove(ofTouchEventArgs & touch){
 void Gesture::touchUp(ofTouchEventArgs & touch){
     for(int i=0; i<currentTraces.size(); i++){
         if(currentTraces[i].touchId == touch.id){
-            
-            currentTraces[i].color = colorPalette.getColor( (traces.size()+currentTraces.size())%colorPalette.width, 0);
-            
-            traces.push_back(currentTraces[i]);
+            addTrace(currentTraces[i]);
             currentTraces.erase(currentTraces.begin()+i);
             break;
         }
     }
     duration = ofGetElapsedTimeMillis() - startTime;
 }
+void Gesture::addTrace(Trace trace){
+    trace.color.setHue(20*traces.size()%255);
+    traces.push_back(trace);
+}
 void Gesture::load(string str){
-    vector<string> lines = ofSplitString(str, "\n");
-    
+    vector<string> lines = ofSplitString(str, "||");
     gestureGroup = ofToInt(ofSplitString(lines[0], " ")[0]);
     duration = ofToInt(ofSplitString(lines[0], " ")[1]);
     
     for(int i=1;i<lines.size();i++){
-        traces.push_back(Trace(0, ofColor(0)));
+        addTrace(Trace(0));
         vector<string> points = ofSplitString(lines[i], "|");
         
         for (int j=1; j<points.size(); j++) {

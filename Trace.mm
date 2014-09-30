@@ -15,7 +15,7 @@ Trace::Trace(int _touchId, ofColor _color){
 }
 Trace::Trace(int _touchId){
     touchId = _touchId;
-    color = ofColor(20, 50, 90);
+    color = ofColor(240,117,117);
     id = 0;
 }
 

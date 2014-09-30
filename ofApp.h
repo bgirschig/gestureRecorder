@@ -7,6 +7,7 @@
 #include "Menu.h"
 #include "Homegrid.h"
 #include "MenuEvent.h"
+#include "ofxHttpUtils/ofxHttpUtils.h"
 
 #include "Poco/RegularExpression.h"
 using Poco::RegularExpression;
@@ -31,9 +32,12 @@ class ofApp : public ofxiOSApp {
     
     void menuEvent(MenuEvent &e);
     void loadExisting();
+    void newResponse(ofxHttpResponse & response);
     Gesture currentGesture;
     Menu* menu;
     Homegrid homegrid;
     ofTrueTypeFont font;
     int test = 34;
+    
+    ofxHttpUtils httpUtils;
 };

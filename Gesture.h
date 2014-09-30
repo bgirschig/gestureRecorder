@@ -20,6 +20,7 @@ class Gesture{
     void touchMove(ofTouchEventArgs & touch);
     void touchUp(ofTouchEventArgs & touch);
     void load(string str);
+    void addTrace(Trace trace);
     
     string toString(Boolean prettyPrint);
     
@@ -31,7 +32,6 @@ class Gesture{
     
     vector<Trace> traces;
     vector<Trace> currentTraces;
-    ofImage colorPalette;
 };
 
 #endif
