@@ -18,7 +18,7 @@ void ofApp::loadExisting(){
     string action_url = "http://bastiengirschig.fr/GestureRecorder/gestureLoader.php?loadData";
 	ofAddListener(httpUtils.newResponseEvent,this,&ofApp::newResponse);
 	httpUtils.start();
-    
+
     ofxHttpForm form;
 	form.action = action_url;
 	httpUtils.addForm(form);
@@ -33,8 +33,6 @@ void ofApp::newResponse(ofxHttpResponse & response){
 }
 
 void ofApp::menuEvent(MenuEvent &e) {
-//    ofstream ofs("/Applications/of_v0.8.4_ios_release/apps/myApps/GestureRecorder/bin/data/fifthgrade.ros", ios::binary);
-//	ofs.write((char *)&currentGesture, sizeof(currentGesture));
     if(e.message == "save"){
         homegrid.gestures.push_back(currentGesture);
         currentGesture = Gesture();
