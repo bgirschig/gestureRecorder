@@ -40,11 +40,10 @@ void Homegrid::draw(){
         ofSetColor(255, 200); //fill color
         ofRect((i%colCount)*elementW+margin, floor(i/colCount)*elementW+margin, elementW, elementW);
         ofNoFill();
+        gestures[i].draw();
         ofSetColor(255);//stroke color
         ofRect((i%colCount)*elementW+margin, floor(i/colCount)*elementW+margin, elementW, elementW);
-        ofDrawBitmapStringHighlight(ofToString(gestures[i].versions.size()), (i%colCount)*elementW+margin, floor(i/colCount)*elementW+margin+13);
-        
-        gestures[i].draw();
+        ofDrawBitmapStringHighlight(ofToString(gestures[i].versions.size()), (i%colCount)*elementW+margin+6, floor(i/colCount)*elementW+margin+15);
     }
 }
 int Homegrid::onClick(int x, int y){
