@@ -22,9 +22,7 @@ void Gesture::draw(){
     if(duration>1) for(int i=0; i<traces.size();i++) traces[i].draw(ofGetElapsedTimeMillis()%(duration+400), scale, containerX, containerY, lineWidth);
 }
 void Gesture::touchDown(ofTouchEventArgs & touch){
-    if(traces.size() == 0){
-        startTime = ofGetElapsedTimeMillis();
-    }
+    if(traces.size() == 0 && currentTraces.size()==0) startTime = ofGetElapsedTimeMillis();
     currentTraces.push_back(Trace(touch.id));
 }
 void Gesture::touchMove(ofTouchEventArgs & touch){
@@ -56,7 +54,6 @@ void Gesture::setScaleParams(int x, int y, int w, int h, Boolean allowScaleUp){
     containerY = y;
     if (ratio>float(w)/h) {
         scale = w/(float)(rBound-lBound);
-        cout << scale<<endl;
         if(!allowScaleUp && scale>1){
             scale = 1;
             containerY += (h-bBound+tBound)/2;

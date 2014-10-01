@@ -48,7 +48,6 @@ void ofApp::menuEvent(MenuEvent &e) {
         
         //reset "current gesture"
         currentGesture = Gesture();
-        currentGesture.gestureGroup = homegrid.gestures.size();
     }
     else if(e.message=="backToHome"){
         currentGesture = Gesture();
@@ -56,6 +55,9 @@ void ofApp::menuEvent(MenuEvent &e) {
     else if(e.message == "displayResult"){
         currentGesture.normalizePoints();
         currentGesture.setScaleParams(10, 10, ofGetWindowWidth()-10, ofGetWindowHeight()-(2*Settings::menuBtnHeight)-10, false);
+    }
+    else if(e.message == "newGesture"){
+        currentGesture.gestureGroup = homegrid.gestures.size();
     }
 }
 
