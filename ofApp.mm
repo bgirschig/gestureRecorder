@@ -83,7 +83,28 @@ void ofApp::draw(){
     else if(menu->stage==2||menu->stage==3) currentGroup.draw();
     ofFill();
     menu->draw();
+    if(menu->stage==3)drawArrows();
 }
+void ofApp::drawArrows(){
+    ofSetLineWidth(4);
+    ofSetColor(ofColor(255));
+    ofPolyline line = ofPolyline();
+    int yPos = (ofGetWindowHeight()-(Settings::menuBtnHeight*2))/2;
+    if(currentGroup.currentVesrion>0){
+        line.addVertex(30,yPos-20);
+        line.addVertex(10,yPos);
+        line.addVertex(30,yPos+20);
+        line.draw();
+        line.clear();
+    }
+    if(currentGroup.currentVesrion<currentGroup.versions.size()-1){
+        line.addVertex(ofGetWindowWidth()-30,yPos-20);
+        line.addVertex(ofGetWindowWidth()-10,yPos);
+        line.addVertex(ofGetWindowWidth()-30,yPos+20);
+        line.draw();
+    }
+}
+
 
 //--------------------------------------------------------------
 void ofApp::exit(){

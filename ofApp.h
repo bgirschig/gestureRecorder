@@ -18,6 +18,7 @@ class ofApp : public ofxiOSApp {
     void setup();
     void update();
     void draw();
+    void drawArrows();
     void exit();
 
     void touchDown(ofTouchEventArgs & touch);

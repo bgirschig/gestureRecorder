@@ -42,6 +42,7 @@ void Homegrid::draw(){
         ofNoFill();
         ofSetColor(255);//stroke color
         ofRect((i%colCount)*elementW+margin, floor(i/colCount)*elementW+margin, elementW, elementW);
+        ofDrawBitmapStringHighlight(ofToString(gestures[i].versions.size()), (i%colCount)*elementW+margin, floor(i/colCount)*elementW+margin+13);
         
         gestures[i].draw();
     }
