@@ -38,9 +38,7 @@ void ofApp::newResponse(ofxHttpResponse & response){
 }
 
 void ofApp::menuEvent(MenuEvent &e) {
-    cout<<e.message<<endl;
     if(e.message == "save"){
-        cout << "save"<<endl;
         // add to homeGrid
         homegrid.AddGroup(currentGroup);
         
@@ -56,7 +54,6 @@ void ofApp::menuEvent(MenuEvent &e) {
         currentGroup.getCurrent().normalizePoints();
         homegrid.AddVersion(currentGroup.getCurrent());
         
-        cout<<currentGroup.getCurrent().toString(false)<<endl;
         // save to server
         ofxHttpForm form;
         form.action = "http://bastiengirschig.fr/GestureRecorder/gestureLoader.php?saveData&&dataString="+currentGroup.getCurrent().toString(false);
