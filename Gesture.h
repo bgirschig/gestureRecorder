@@ -34,6 +34,7 @@ class Gesture{
     int containerX, containerY;
     float ratio;
     float scale;
+    int lineWidth;
     
     Boolean drawing;
     

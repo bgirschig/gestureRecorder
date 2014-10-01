@@ -16,12 +16,21 @@ Homegrid::Homegrid(int _margin, int _colCount){
     colCount = _colCount;
     elementW = (windowW - (2 * margin)) / colCount;
 }
+void Homegrid::AddGesture(Gesture gesture){
+    gesture.lineWidth = 2;
+    gesture.setScaleParams((gestures.size()%colCount)*elementW+margin, floor(gestures.size()/colCount)*elementW+margin, elementW, elementW, true);
+    gestures.push_back(gesture);
+}
 void Homegrid::draw(){
     for(int i=0; i < gestures.size(); i++) {
-        ofNoFill();
-        ofSetLineWidth(1);
-        ofSetColor(0);
+        ofFill();
+        ofSetColor(255, 200); //fill color
         ofRect((i%colCount)*elementW+margin, floor(i/colCount)*elementW+margin, elementW, elementW);
+        ofNoFill();
+        ofSetColor(255);//stroke color
+        ofRect((i%colCount)*elementW+margin, floor(i/colCount)*elementW+margin, elementW, elementW);
+        
+        gestures[i].draw();
     }
 }
 int Homegrid::onClick(int x, int y){

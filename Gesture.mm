@@ -12,14 +12,14 @@ Gesture::Gesture(){
     startTime = 0;
     traces = vector<Trace>();
     currentTraces = vector<Trace>();
+    lineWidth = Settings::lineWidth;
 }
 Gesture::Gesture(string loadData){
     Gesture();
     load(loadData);
-    setScaleParams(0, 0, 300, 300, true);
 }
 void Gesture::draw(){
-    if(duration>1) for(int i=0; i<traces.size();i++) traces[i].draw(ofGetElapsedTimeMillis()%(duration+400), scale, containerX, containerY);
+    if(duration>1) for(int i=0; i<traces.size();i++) traces[i].draw(ofGetElapsedTimeMillis()%(duration+400), scale, containerX, containerY, lineWidth);
 }
 void Gesture::touchDown(ofTouchEventArgs & touch){
     if(traces.size() == 0){
@@ -52,28 +52,26 @@ void Gesture::touchUp(ofTouchEventArgs & touch){
     ratio = (float)(rBound-lBound)/(bBound-tBound);
 }
 void Gesture::setScaleParams(int x, int y, int w, int h, Boolean allowScaleUp){
-    w = ofGetWindowWidth();
-    h = ofGetWindowHeight()-(2*Settings::menuBtnHeight);
-    allowScaleUp = false;
     containerX = x;
     containerY = y;
     if (ratio>float(w)/h) {
         scale = w/(float)(rBound-lBound);
-        if(allowScaleUp && scale>1)containerY += (h - (w/ratio))/2;
-        else{
+        cout << scale<<endl;
+        if(!allowScaleUp && scale>1){
             scale = 1;
             containerY += (h-bBound+tBound)/2;
             containerX += (w-rBound+lBound)/2;
         }
+        else containerY += (h - (w/ratio))/2;
     }
     else{
         scale = h/(float)(bBound-tBound);
-        if(allowScaleUp && scale>1) containerX += (w - (h*ratio))/2;
-        else{
+        if(!allowScaleUp && scale>1){
             scale = 1;
             containerY += (h-bBound+tBound)/2;
             containerX += (w-rBound+lBound)/2;
         }
+        else containerX += (w - (h*ratio))/2;
     }
 }
 void Gesture::normalizePoints(){

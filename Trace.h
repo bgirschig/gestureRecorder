@@ -18,7 +18,7 @@ class Trace{
     Trace(int _touchId);
     void setup();
     void update();
-    void draw(int animTime, float _scale, int _x, int _y);
+    void draw(int animTime, float _scale, int _x, int _y, int lineWidth);
     void addPoint(int x, int y, int time);
     
     ofPolyline line;

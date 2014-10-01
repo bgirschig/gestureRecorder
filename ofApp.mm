@@ -14,7 +14,6 @@ void ofApp::setup(){
     loadExisting();
 }
 void ofApp::loadExisting(){
-//    string action_url = "http://localhost:8888/GestureRecorderServer/gestureLoader.php";
     string action_url = "http://bastiengirschig.fr/GestureRecorder/gestureLoader.php?loadData";
 	ofAddListener(httpUtils.newResponseEvent,this,&ofApp::newResponse);
 	httpUtils.start();
@@ -27,7 +26,7 @@ void ofApp::newResponse(ofxHttpResponse & response){
     if (response.status == 200){
         vector<string> gestureStrings = ofSplitString(response.responseBody, "\r");
         for (int i=0; i<gestureStrings.size()-1; i++) {
-            homegrid.gestures.push_back(Gesture(gestureStrings[i]));
+            homegrid.AddGesture(Gesture(gestureStrings[i]));
         }
     }
     else{
@@ -40,12 +39,12 @@ void ofApp::newResponse(ofxHttpResponse & response){
 void ofApp::menuEvent(MenuEvent &e) {
     if(e.message == "save"){
         // add to homeGrid
-        homegrid.gestures.push_back(currentGesture);
+        homegrid.AddGesture(currentGesture);
         
-//        // save to server
-//        ofxHttpForm form;
-//        form.action = "http://bastiengirschig.fr/GestureRecorder/gestureLoader.php?saveData&&dataString="+currentGesture.toString(false);
-//        httpUtils.addForm(form);
+        // save to server
+        ofxHttpForm form;
+        form.action = "http://bastiengirschig.fr/GestureRecorder/gestureLoader.php?saveData&&dataString="+currentGesture.toString(false);
+        httpUtils.addForm(form);
         
         //reset "current gesture"
         currentGesture = Gesture();
@@ -56,7 +55,7 @@ void ofApp::menuEvent(MenuEvent &e) {
     }
     else if(e.message == "displayResult"){
         currentGesture.normalizePoints();
-        currentGesture.setScaleParams(0, 0, 300, 300, true);
+        currentGesture.setScaleParams(10, 10, ofGetWindowWidth()-10, ofGetWindowHeight()-(2*Settings::menuBtnHeight)-10, false);
     }
 }
 
@@ -85,6 +84,8 @@ void ofApp::touchDown(ofTouchEventArgs & touch){
             int selected = homegrid.onClick(touch.x, touch.y);
             if(selected>=0){
                 currentGesture = homegrid.gestures[selected];
+                currentGesture.setScaleParams(0, 0, ofGetWindowWidth(), ofGetWindowHeight(), false);
+                currentGesture.lineWidth = Settings::lineWidth;
                 menu->gotoStage(3);
             }
         }
