@@ -42,10 +42,10 @@ void ofApp::menuEvent(MenuEvent &e) {
         // add to homeGrid
         homegrid.gestures.push_back(currentGesture);
         
-        // save to server
-        ofxHttpForm form;
-        form.action = "http://bastiengirschig.fr/GestureRecorder/gestureLoader.php?saveData&&dataString="+currentGesture.toString(false);
-        httpUtils.addForm(form);
+//        // save to server
+//        ofxHttpForm form;
+//        form.action = "http://bastiengirschig.fr/GestureRecorder/gestureLoader.php?saveData&&dataString="+currentGesture.toString(false);
+//        httpUtils.addForm(form);
         
         //reset "current gesture"
         currentGesture = Gesture();
@@ -53,6 +53,10 @@ void ofApp::menuEvent(MenuEvent &e) {
     }
     else if(e.message=="backToHome"){
         currentGesture = Gesture();
+    }
+    else if(e.message == "displayResult"){
+        currentGesture.normalizePoints();
+        currentGesture.setScaleParams(0, 0, 300, 300, true);
     }
 }
 

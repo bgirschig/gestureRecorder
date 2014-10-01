@@ -21,12 +21,19 @@ class Gesture{
     void touchUp(ofTouchEventArgs & touch);
     void load(string str);
     void addTrace(Trace trace);
+    void setScaleParams(int x, int y, int w, int h, Boolean allowScaleUp);
+    void normalizePoints();
     
     string toString(Boolean prettyPrint);
     
     int startTime;
     int duration;
     int gestureGroup;
+    
+    int lBound = INFINITY, rBound = 0, tBound = INFINITY, bBound = 0;
+    int containerX, containerY;
+    float ratio;
+    float scale;
     
     Boolean drawing;
     

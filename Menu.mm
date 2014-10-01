@@ -36,7 +36,12 @@ Boolean Menu::click(int mouseY){
     else if(mouseY>ofGetWindowHeight()-Settings::menuBtnHeight){
         hasTouch = true;
         if(stage == 0)      gotoStage(1);
-        else if(stage == 1) gotoStage(2);
+        else if(stage == 1){
+            static MenuEvent newEvent;
+            newEvent.message = "displayResult";
+            ofNotifyEvent(MenuEvent::events, newEvent);
+            gotoStage(2);
+        }
         else if(stage==5)   gotoStage(0);
     }
     return hasTouch;

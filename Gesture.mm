@@ -16,10 +16,10 @@ Gesture::Gesture(){
 Gesture::Gesture(string loadData){
     Gesture();
     load(loadData);
+    setScaleParams(0, 0, 300, 300, true);
 }
 void Gesture::draw(){
-    for(int i=0; i<currentTraces.size();i++) currentTraces[i].draw(INFINITY);
-    if(duration>1) for(int i=0; i<traces.size();i++) traces[i].draw(ofGetElapsedTimeMillis()%duration);    
+    if(duration>1) for(int i=0; i<traces.size();i++) traces[i].draw(ofGetElapsedTimeMillis()%(duration+400), scale, containerX, containerY);
 }
 void Gesture::touchDown(ofTouchEventArgs & touch){
     if(traces.size() == 0){
@@ -30,6 +30,11 @@ void Gesture::touchDown(ofTouchEventArgs & touch){
 void Gesture::touchMove(ofTouchEventArgs & touch){
     for(int i=0; i<currentTraces.size();i++){
         if(currentTraces[i].touchId == touch.id){
+            if(touch.x<=lBound)lBound = touch.x;
+            if(touch.x>=rBound)rBound = touch.x;
+            if(touch.y<=tBound)tBound = touch.y;
+            if(touch.y>=bBound)bBound = touch.y;
+            
             currentTraces[i].addPoint(touch.x, touch.y, ofGetElapsedTimeMillis()-startTime);
             break;
         }
@@ -44,15 +49,57 @@ void Gesture::touchUp(ofTouchEventArgs & touch){
         }
     }
     duration = ofGetElapsedTimeMillis() - startTime;
+    ratio = (float)(rBound-lBound)/(bBound-tBound);
 }
+void Gesture::setScaleParams(int x, int y, int w, int h, Boolean allowScaleUp){
+    w = ofGetWindowWidth();
+    h = ofGetWindowHeight()-(2*Settings::menuBtnHeight);
+    allowScaleUp = false;
+    containerX = x;
+    containerY = y;
+    if (ratio>float(w)/h) {
+        scale = w/(float)(rBound-lBound);
+        if(allowScaleUp && scale>1)containerY += (h - (w/ratio))/2;
+        else{
+            scale = 1;
+            containerY += (h-bBound+tBound)/2;
+            containerX += (w-rBound+lBound)/2;
+        }
+    }
+    else{
+        scale = h/(float)(bBound-tBound);
+        if(allowScaleUp && scale>1) containerX += (w - (h*ratio))/2;
+        else{
+            scale = 1;
+            containerY += (h-bBound+tBound)/2;
+            containerX += (w-rBound+lBound)/2;
+        }
+    }
+}
+void Gesture::normalizePoints(){
+    for(int i=0;i<traces.size();i++){
+        for (int j=0; j<traces[i].points.size(); j++) {
+            traces[i].points[j].x -= lBound;
+            traces[i].points[j].y -= tBound;
+        }
+    }
+}
+
 void Gesture::addTrace(Trace trace){
     trace.color.setHue(20*traces.size()%255);
     traces.push_back(trace);
 }
 void Gesture::load(string str){
     vector<string> lines = ofSplitString(str, "||");
-    gestureGroup = ofToInt(ofSplitString(lines[0], "_")[0]);
-    duration = ofToInt(ofSplitString(lines[0], "_")[1]);
+   
+    vector<string> gestureInfo = ofSplitString(lines[0], ",");
+    gestureGroup = ofToInt(gestureInfo[0]);
+    duration = ofToInt(gestureInfo[1]);
+    lBound = ofToInt(gestureInfo[2]);
+    rBound = ofToInt(gestureInfo[3]);
+    tBound = ofToInt(gestureInfo[4]);
+    bBound = ofToInt(gestureInfo[5]);
+    ratio = ofToFloat(gestureInfo[6]);
     
     for(int i=1;i<lines.size();i++){
         addTrace(Trace(0));
@@ -64,6 +111,7 @@ void Gesture::load(string str){
         }
     }
 }
+
 string Gesture::toString(Boolean prettyPrint){
     std::ostringstream result;
     if(prettyPrint){
@@ -79,7 +127,7 @@ string Gesture::toString(Boolean prettyPrint){
         }
     }
     else{
-        result << gestureGroup << "_"<< duration << "|";
+        result << gestureGroup << ","<< duration <<","<< lBound <<","<< rBound <<","<< tBound <<","<< bBound<<","<< ratio << "|";
         for (int i=0; i<traces.size(); i++) {
             for (int j=0;j<traces[i].points.size(); j++) {
                 result << "|" << traces[i].points[j].x << "," << traces[i].points[j].y<< "," << traces[i].points[j].t;
