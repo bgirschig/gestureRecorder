@@ -10,12 +10,14 @@
 #define GestureRecorder_Homegrid_h
 #include "ofMain.h"
 #include "Gesture.h"
+#include "GestureGroup.h"
 
 class Homegrid{
     public:
     Homegrid();
     Homegrid(int _margin, int _colCount);
     void AddGesture(Gesture gesture);
+    void AddGroup(GestureGroup group);
     
     int onClick(int x, int y);
     void draw();
@@ -24,7 +26,7 @@ class Homegrid{
     int margin;
     int colCount;
     int elementW;
-    vector<Gesture> gestures;
+    vector<GestureGroup> gestures;
 };
 
 #endif

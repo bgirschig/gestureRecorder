@@ -19,8 +19,21 @@ Homegrid::Homegrid(int _margin, int _colCount){
 void Homegrid::AddGesture(Gesture gesture){
     gesture.lineWidth = 2;
     gesture.setScaleParams((gestures.size()%colCount)*elementW+margin, floor(gestures.size()/colCount)*elementW+margin, elementW, elementW, true);
-    gestures.push_back(gesture);
+    Boolean createNewGroup = true;
+    for (int i=0; i<gestures.size(); i++) {
+        if(gestures[i].groupId == gesture.gestureGroup){
+            gestures[i].addVersion(gesture);
+            createNewGroup = false;
+        }
+    }
+    if(createNewGroup) gestures.push_back(GestureGroup(gestures.size(), gesture));
 }
+void Homegrid::AddGroup(GestureGroup group){
+    group.getCurrent().lineWidth = 2;
+    group.getCurrent().setScaleParams((gestures.size()%colCount)*elementW+margin, floor(gestures.size()/colCount)*elementW+margin, elementW, elementW, true);
+    gestures.push_back(group);
+}
+
 void Homegrid::draw(){
     for(int i=0; i < gestures.size(); i++) {
         ofFill();

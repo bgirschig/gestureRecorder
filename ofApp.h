@@ -4,6 +4,7 @@
 #include "ofxiOS.h"
 #include "ofxiOSExtras.h"
 #include "Gesture.h"
+#include "GestureGroup.h"
 #include "Menu.h"
 #include "Homegrid.h"
 #include "MenuEvent.h"
@@ -33,7 +34,7 @@ class ofApp : public ofxiOSApp {
     void menuEvent(MenuEvent &e);
     void loadExisting();
     void newResponse(ofxHttpResponse & response);
-    Gesture currentGesture;
+    GestureGroup currentGroup;
     Menu* menu;
     Homegrid homegrid;
     ofTrueTypeFont font;
