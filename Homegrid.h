@@ -16,7 +16,7 @@ class Homegrid{
     public:
     Homegrid();
     Homegrid(int _margin, int _colCount);
-    void AddGesture(Gesture gesture);
+    void AddVersion(Gesture gesture);
     void AddGroup(GestureGroup group);
     
     int onClick(int x, int y);

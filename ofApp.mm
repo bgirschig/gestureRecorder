@@ -2,18 +2,17 @@
 
 //--------------------------------------------------------------
 void ofApp::setup(){
-    loadExisting();
-    
     font.loadFont("futura.ttf", 12);
     ofNoFill();
-    
-    
-    currentGroup = GestureGroup(homegrid.gestures.size(), Gesture());
     
     menu = new Menu();
     homegrid = Homegrid(Settings::homeGridMargin, Settings::homeGridColCount);
     
+    currentGroup = GestureGroup(homegrid.gestures.size(), Gesture());
+    
     ofAddListener(MenuEvent::events, this, &ofApp::menuEvent);
+
+    loadExisting();
 }
 void ofApp::loadExisting(){
     string action_url = "http://bastiengirschig.fr/GestureRecorder/gestureLoader.php?loadData";
@@ -28,7 +27,7 @@ void ofApp::newResponse(ofxHttpResponse & response){
     if (response.status == 200){
         vector<string> gestureStrings = ofSplitString(response.responseBody, "\r");
         for (int i=0; i<gestureStrings.size()-1; i++) {
-            homegrid.AddGesture(Gesture(gestureStrings[i]));
+            homegrid.AddVersion(Gesture(gestureStrings[i]));
         }
     }
     else{
@@ -39,10 +38,25 @@ void ofApp::newResponse(ofxHttpResponse & response){
 }
 
 void ofApp::menuEvent(MenuEvent &e) {
+    cout<<e.message<<endl;
     if(e.message == "save"){
+        cout << "save"<<endl;
         // add to homeGrid
         homegrid.AddGroup(currentGroup);
         
+        // save to server
+        ofxHttpForm form;
+        form.action = "http://bastiengirschig.fr/GestureRecorder/gestureLoader.php?saveData&&dataString="+currentGroup.getCurrent().toString(false);
+        httpUtils.addForm(form);
+        
+        //reset "current gesture"
+        currentGroup = GestureGroup(homegrid.gestures.size(), Gesture());
+    }
+    else if (e.message=="addVersion"){
+        currentGroup.getCurrent().normalizePoints();
+        homegrid.AddVersion(currentGroup.getCurrent());
+        
+        cout<<currentGroup.getCurrent().toString(false)<<endl;
         // save to server
         ofxHttpForm form;
         form.action = "http://bastiengirschig.fr/GestureRecorder/gestureLoader.php?saveData&&dataString="+currentGroup.getCurrent().toString(false);
@@ -58,9 +72,7 @@ void ofApp::menuEvent(MenuEvent &e) {
         currentGroup.getCurrent().normalizePoints();
         currentGroup.getCurrent().setScaleParams(10, 10, ofGetWindowWidth()-10, ofGetWindowHeight()-(2*Settings::menuBtnHeight)-10, false);
     }
-    else if(e.message == "newGesture"){
-        currentGroup = GestureGroup(homegrid.gestures.size(), Gesture());
-    }
+    else if(e.message == "newVersion") currentGroup.addVersion(Gesture());
 }
 
 //--------------------------------------------------------------

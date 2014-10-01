@@ -9,7 +9,6 @@
 #include "GestureGroup.h"
 
 GestureGroup::GestureGroup(){
-    
 }
 GestureGroup::GestureGroup(int _groupId, Gesture firstGesture){
     groupId = _groupId;
@@ -20,7 +19,9 @@ void GestureGroup::draw(){
     versions[currentVesrion].draw();
 }
 void GestureGroup::addVersion(Gesture gesture){
+    gesture.gestureGroup = groupId;
     versions.push_back(gesture);
+    currentVesrion = versions.size()-1;
 }
 Gesture& GestureGroup::getCurrent(){
     return versions[currentVesrion];
@@ -28,7 +29,6 @@ Gesture& GestureGroup::getCurrent(){
 void GestureGroup::gotoNext(){
     currentVesrion = (currentVesrion+1);
     if(currentVesrion > versions.size()-1) currentVesrion = versions.size()-1;
-    cout << currentVesrion;
 }
 void GestureGroup::gotoPrev(){
     currentVesrion = (currentVesrion-1);
